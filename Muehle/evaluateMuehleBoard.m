@@ -9,9 +9,9 @@ function [isOver, finscore]=evaluateMuehleBoard(board, depth, phase1, phase2)
 
 
 
-if phase1== phase2 ==1
+
 isOver=0;
 finscore=NaN;
-end
+
 
 end
