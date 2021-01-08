@@ -13,24 +13,12 @@ if phase1==1
 isOver=0;
 elseif (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)
     n=0;
-    a=find(board==playerType);
-    for i=1:numel(a)
-        for j=1:numel(board)
-            if isValidMove(board,a(i),j,playerType,phase1,phase2)
+    for i=find(board==playerType)
+        for j=1:numel(b)
+            if isValidMove(board,i,j,playerType,phase1,phase2)
                 n=n+1;
             end
         end
-    end
-    if n==0
-        isOver=1;
-    else 
-        isOver=0;
-    end
-elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
-    if numel(board(board==playerType))<3
-        isOver=1;
-    else
-        isOver=0;
     end
 end
 

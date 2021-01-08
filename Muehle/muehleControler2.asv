@@ -7,7 +7,7 @@ function b=muehleControler2(b,startingPlayer)
 
 phase1=1;
 phase2=1;
-stonesBeginningPhase=18;
+stonesBeginningPhase=10;
 
 if ~exist('startingPlayer','var')
     startingPlayer = 1;
@@ -22,14 +22,13 @@ end
 playerType = startingPlayer;
 
 while 1   
-    disp(b);
-    isOver = evaluateMuehleBoard(b, 0, phase1, phase2, playerType);
+    isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
     if(isOver)
         disp(b);
-        disp(['Player ' num2str(-playerType) ' won!'])
+        disp(['Player ' num2str(playerType) ' won!'])
         break; 
     end
-    
+    disp(b);
     if (playerType==1 && phase1==3) || (playerType==-1 && phase2==3) %%check for phase 3
         disp([num2str(playerType) ' is in phase 3']);
         selectedStone = input(['Player ' num2str(playerType) ' chooses Stone: ']);
@@ -97,7 +96,7 @@ while 1
         b(stoneToRemove)=0;
         end
         
-        if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
+        if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)
             if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
                 if -playerType==1
                 phase1=3;
