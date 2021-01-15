@@ -1,4 +1,4 @@
-function b=muehleControler2(b,startingPlayer)
+function b=muehleControler3(b,startingPlayer)
 %minimal Mühle controler for two human players, I/O via Command Window
 %inputs:
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
@@ -26,29 +26,31 @@ playerType = startingPlayer;
 
 while 1   
     disp(b); %show current board
-    if stonesBeginningPhase>0 %%check for phase 1
-        moveTo = input(['Move of Player ' num2str(playerType) ':  ']);
-        while ~(isValidMove(b,0,moveTo,playerType,phase1,phase2))
-            moveTo = input(['Not a valid move! Move of Player ' num2str(playerType) ':  ']);
-            isValidMove(b,0,moveTo,playerType,phase1,phase2);
-        end
-        stonesBeginningPhase=stonesBeginningPhase-1;
-        b(moveTo) = playerType;
-        if stonesBeginningPhase==0
-            disp('end of Phase 1');
-            phase1=2;
-            phase2=2;
-        end
-        
-    elseif (playerType==1 && phase1==2) || (playerType==1 && phase1==3) || (playerType==-1 && phase2==2)  || (playerType==-1 && phase2==3) %%check for phase 2 or 3
-        selectedStone = input(['Player ' num2str(playerType) ' chooses Stone: ']);
-        moveTo = input('and moves it to: ');
-        while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
-            selectedStone = input(['Not a valid move! Player ' num2str(playerType) ' chooses Stone: ']);
+    if playerType == 1 %move of human player
+        if stonesBeginningPhase>0 %%check for phase 1
+            moveTo = input('Move of Player:  ');
+            while ~(isValidMove(b,0,moveTo,playerType,phase1,phase2))
+                moveTo = input(['Not a valid move! Move of Player ' num2str(playerType) ':  ']);
+                isValidMove(b,0,moveTo,playerType,phase1,phase2);
+            end
+            stonesBeginningPhase=stonesBeginningPhase-1;
+            b(moveTo) = playerType;
+            if stonesBeginningPhase==0
+                disp('end of Phase 1');
+                phase1=2;
+                phase2=2;
+            end
+
+        elseif phase1==2 || phase1==3 %%check for phase 2 or 3
+            selectedStone = input(['Player chooses Stone: ']);
             moveTo = input('and moves it to: ');
-            isValidMove(b,0,moveTo,playerType,phase1,phase2);
+            while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
+                selectedStone = input(['Not a valid move! Player ' num2str(playerType) ' chooses Stone: ']);
+                moveTo = input('and moves it to: ');
+                isValidMove(b,0,moveTo,playerType,phase1,phase2);
+            end
+            b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
         end
-        b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
     end
     
     if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
