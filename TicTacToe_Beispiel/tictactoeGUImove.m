@@ -6,11 +6,11 @@ function newboard = tictactoeGUImove(board,playerType)
 %   playerType (1/-1) specifies whose turn it is - for other values the GUI
 %   does not accept any user-inputs (clicks)
 
-h = findobj('Name','TicTacToe'); %existierende figure finden
+h = findobj('Name','Muehle'); %existierende figure finden
 if isempty(h)
-    h = figure('Name','TicTacToe'); %oder neu erschaffen
+    h = figure('Name','Muehle'); %oder neu erschaffen
     axis off; axis square,  % prepare to draw 
-    xlim([0.5 3.5]); ylim([0.5 3.5]);    
+    xlim([0 6]); ylim([0 6]);    
 end
 
 board = rot90(board,3); %Display-Koordinaten wie Lesefluss (nicht wie Matrix)
@@ -32,28 +32,44 @@ function updateBoard(h)
 
     delete(findobj(gca,'Type','text')); %alte Einträge löschen
     delete(findobj(gca,'Type','rectangle')); %alte Einträge löschen
-
-    rectangle('Position',[0.5 0.5 3 3],'LineWidth',3,'Clipping','off','FaceColor',[1 1 1]) % outside border
+    
+    %Background
+    
+    maxWidth = 6;
+    maxHeight = 6;
+    
+    lineWidth = 5;
+    
+    rectangle('Position',[0 0 7 7],'LineWidth',lineWidth,'Clipping','off','FaceColor',[1 1 1]) % outside border
+    
+    line([0 7],[3.5 3.5],'Color','black','Clipping', 'off', 'LineWidth',lineWidth)
+    line([3.5 3.5],[0 7],'Color','black','Clipping', 'off', 'LineWidth',lineWidth)
+    
+    rectangle('Position',[1 1 5 5],'LineWidth',lineWidth,'Clipping','off','FaceColor',[0 0 0 0]) % outside border
+    
+    rectangle('Position',[2 2 3 3],'LineWidth',lineWidth,'Clipping','off','FaceColor',[1 1 1 1]) % outside border
+    
     %rectangle('Position',[1.5 0.5 1 3],'LineWidth',1) % inside border
     %rectangle('Position',[0.5 1.5 3 1],'LineWidth',1) % inside border
 
     board = h.UserData.b;
     % Fill in the marks
-    for i=1:3
-        for j=1:3
-            if board(i,j)==1           
-                text(i,j,'X','FontUnits','normalized','FontSize',0.3,'HorizontalAlignment','center');
-            elseif board(i,j)==-1
-                text(i,j,'O','FontUnits','normalized','FontSize',0.3,'HorizontalAlignment','center');
-            elseif h.UserData.p ~= 0 %anklickbare Rechtecke auf leere Felder legen, Index als UserData
-                linindex = sub2ind(size(board),i,j);              
-                rectangle('Position',[i-0.90 j-0.90 0.9 0.9],'FaceColor',[1 0 0],'UserData',linindex,'Tag','clickable','ButtonDownFcn',@clickedCallback);
-                %TRICK: Das Objekt merkt sich seinen Index in UsewrData,
-                %damit man in der Callbackfunktion einfach herausfinden
-                %kann, auf welches Objekt geklickt wurde
-            end
-        end
-    end
+    
+%     for i=1:3
+%         for j=1:3
+%             if board(i,j)==1           
+%                 text(i,j,'X','FontUnits','normalized','FontSize',0.3,'HorizontalAlignment','center');
+%             elseif board(i,j)==-1
+%                 text(i,j,'O','FontUnits','normalized','FontSize',0.3,'HorizontalAlignment','center');
+%             elseif h.UserData.p ~= 0 %anklickbare Rechtecke auf leere Felder legen, Index als UserData
+%                 linindex = sub2ind(size(board),i,j);              
+%                 rectangle('Position',[i-0.90 j-0.90 0.9 0.9],'FaceColor',[1 0 0],'UserData',linindex,'Tag','clickable','ButtonDownFcn',@clickedCallback);
+%                 %TRICK: Das Objekt merkt sich seinen Index in UsewrData,
+%                 %damit man in der Callbackfunktion einfach herausfinden
+%                 %kann, auf welches Objekt geklickt wurde
+%             end
+%         end
+%     end
     drawnow 
 end
 
