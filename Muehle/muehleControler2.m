@@ -7,7 +7,7 @@ function b=muehleControler2(b,startingPlayer)
 
 phase1=1;
 phase2=1;
-stonesBeginningPhase=18;
+stonesBeginningPhase=8;
 
 if ~exist('startingPlayer','var')
     startingPlayer = 1;
@@ -23,12 +23,7 @@ playerType = startingPlayer;
 
 while 1   
     disp(b);
-    isOver = evaluateMuehleBoard(b, 0, phase1, phase2, playerType);
-    if(isOver)
-        disp(b);
-        disp(['Player ' num2str(-playerType) ' won!'])
-        break; 
-    end
+    
     
     if (playerType==1 && phase1==3) || (playerType==-1 && phase2==3) %%check for phase 3
         disp([num2str(playerType) ' is in phase 3']);
@@ -106,6 +101,13 @@ while 1
                 end
             end
         end
+    end
+    
+    isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
+    if(isOver)
+        disp(b);
+        disp(['Player ' num2str(playerType) ' won!'])
+        break; 
     end
     
     playerType = -playerType;
