@@ -7,7 +7,7 @@ function b=muehleControler2(b,startingPlayer)
 
 phase1=1;
 phase2=1;
-stonesBeginningPhase=10;
+stonesBeginningPhase=18;
 
 if ~exist('startingPlayer','var')
     startingPlayer = 1;
@@ -40,7 +40,7 @@ while 1
             phase2=2;
         end
         
-    elseif (playerType==1 && phase1==2) || (playerType==1 && phase1==3) || (playerType==-1 && phase2==2)  || (playerType==-1 && phase2==3) %%check for phase 2 or 3
+    else %%phase 2 or 3
         selectedStone = input(['Player ' num2str(playerType) ' chooses Stone: ']);
         moveTo = input('and moves it to: ');
         while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
@@ -54,8 +54,8 @@ while 1
     if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
         disp('spieler hat eine Mühle gemacht');
         n=0;
-        for l=1:numel(b)
-            if validRemove(b,playerType,l) %check if there are any possible stones to remove
+        for i=1:numel(b)
+            if validRemove(b,playerType,i) %check if there are any possible stones to remove
                 n=n+1;
             end
         end

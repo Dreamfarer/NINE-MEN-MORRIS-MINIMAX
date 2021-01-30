@@ -5,9 +5,9 @@ function b=muehleControler3(b,startingPlayer)
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
 
-phase1=1;
-phase2=1;
-stonesBeginningPhase=10;
+phase1=2;
+phase2=2;
+stonesBeginningPhase=0;
 
 if ~exist('startingPlayer','var')
     startingPlayer = 1;
@@ -19,7 +19,13 @@ end
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
     a = zeros(3,3,3); 
     a(2,2,:) = NaN; %NaN at every middle position since muehle has no middle position in each layer
-    b=a;
+%     b=a;
+
+%testboard:
+a([1 2 6 17 22])=1;
+a([7 8 15 18 11])=-1;
+b=a;
+
 end
 
 playerType = startingPlayer;
@@ -51,27 +57,37 @@ while 1
             end
             b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
         end
+    else %Move of AI
+        [~, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase)
+        if phase2==1
+            b(moveTo)=playerType;
+        else
+            b([moveFrom moveTo])=b([moveTo moveFrom]);
+        end
     end
     
     if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
-        disp('spieler hat eine Mühle gemacht');
-        n=0;
-        for l=1:numel(b)
-            if validRemove(b,playerType,l) %check if there are any possible stones to remove
-                n=n+1;
+        if PlayerType==1
+            disp('spieler hat eine Mühle gemacht');
+            n=0;
+            for l=1:numel(b)
+                if validRemove(b,playerType,l) %check if there are any possible stones to remove
+                    n=n+1;
+                end
             end
-        end
-        if n==0
-            disp('no possible stones to remove');
+            if n==0
+                disp('no possible stones to remove');
+            else
+                stoneToRemove=input('entferne Stein: ');
+                while ~(validRemove(b, playerType, stoneToRemove)) 
+                    stoneToRemove=input('nicht gültiger Input! Entferne Stein: ');
+                    validRemove(b, playerType, stoneToRemove);
+                end
+                b(stoneToRemove)=0; %removes stone from board
+            end
         else
-            stoneToRemove=input('entferne Stein: ');
-            while ~(validRemove(b, playerType, stoneToRemove)) 
-                stoneToRemove=input('nicht gültiger Input! Entferne Stein: ');
-                validRemove(b, playerType, stoneToRemove);
-            end
-            b(stoneToRemove)=0; %removes stone from board
+            b(bestStoneRemove)=0;
         end
-        
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
             if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
                 if -playerType==1
@@ -81,6 +97,7 @@ while 1
                 end
             end
         end
+        
     end
     
     isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
