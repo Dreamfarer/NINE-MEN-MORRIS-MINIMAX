@@ -26,7 +26,7 @@ playerType = startingPlayer;
 
 while 1   
     disp(b); %show current board
-    if stonesBeginningPhase>0 %%check for phase 1
+    if stonesBegnningPhase>0 %%check for phase 1
         moveTo = input(['Move of Player ' num2str(playerType) ':  ']);
         while ~(isValidMove(b,0,moveTo,playerType,phase1,phase2))
             moveTo = input(['Not a valid move! Move of Player ' num2str(playerType) ':  ']);
