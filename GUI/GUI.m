@@ -155,7 +155,7 @@ function clickedCallback(obj,evt)
     delete(findobj('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'Tag','clickable'));
     
     %Set new, highlighted, stone
-    rectangle('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',h.UserData.m,'Tag','clickable','ButtonDownFcn',@clickedCallback);
+    rectangle('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',h.UserData.m);
     
     %Show possible moves in phases 2&3
     if h.UserData.ph1 == 2 || h.UserData.ph1 == 3
