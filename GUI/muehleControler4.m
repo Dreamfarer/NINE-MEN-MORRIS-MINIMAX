@@ -66,8 +66,7 @@ while 1
         end
     end
     
-    %Check if there is a "Muehle" and initiate taking it away
-    if checkMuehle(b,moveTo)
+    if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
         if playerType==1
             disp('spieler hat eine Mühle gemacht');
             n=0;
@@ -96,6 +95,7 @@ while 1
             if n==0
             else
             b(bestStoneRemove)=0;
+            disp(['AI removed stone: ' num2str(bestStoneRemove)]);
             end
         end
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)

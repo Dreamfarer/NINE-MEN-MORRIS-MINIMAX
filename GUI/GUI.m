@@ -30,11 +30,7 @@ end
 
 newboard = h.UserData.b;
 
-if phase1 >= 2 
-    moveTo = h.UserData.moveTo;
-else
-    moveTo = h.UserData.moveFrom;
-end
+moveTo = h.UserData.moveTo;
 
 end
 
@@ -59,15 +55,15 @@ function updateBoard(h)
             
             color = [1 1 1];
             if h.UserData.ph1 == 1
-                rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i);   
+                rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData', [i 1]);   
             else
-               rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i,'Tag','clickable','ButtonDownFcn',@clickedCallback);    
+               rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i 1],'Tag','clickable','ButtonDownFcn',@clickedCallback);    
             end
             
         %Black
         elseif isnan(matrixToPosition(i,1)) == false && isnan(matrixToPosition(i,2)) == false && board(i) == (-1)
             color = [0 0 0];
-            rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i);   
+            rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i -1]);   
         end  
     end
     
@@ -98,7 +94,8 @@ end
 B(1) = [];
 for i=B   
     color = [0 1 0 0.5];
-    rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i,'Tag','clickable','ButtonDownFcn',@clickedCallback);   
+    %'UserData, i = index, 0: possible moves, -1: black, 1: white
+    rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData', [i 0],'Tag','clickable','ButtonDownFcn',@clickedCallback);   
 end
 end
 
@@ -130,40 +127,51 @@ end
 % This function is called when an object is clicked
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function clickedCallback(obj,evt)
-    
+
     %Get h
     h = findobj('Name','Muehle');
     
-    %Transfer index to h
-    h.UserData.m = obj.UserData;
-    
-    %Phase 2&3 need to clicks
+    %Phase 2&3 need two clicks
     h.UserData.click = h.UserData.click + 1;
     
-    if h.UserData.click == 1
-        h.UserData.moveFrom = h.UserData.m;
-    elseif h.UserData.click == 2
-        %Delete old tag
-        delete(findobj('Position',[matrixToPosition(h.UserData.moveFrom,1) matrixToPosition(h.UserData.moveFrom,2) 0.5 0.5],'Tag','clickable'));
-        h.UserData.b(h.UserData.moveFrom) = 0;
-        
-        h.UserData.moveTo = h.UserData.m;
-        
+    continueAllowed = 0;
+    
+    if h.UserData.ph1 == 1
+        h.UserData.moveTo = obj.UserData(1);
+        continueAllowed = 1;
+    elseif h.UserData.ph1 >= 2
+        if h.UserData.click == 1 && obj.UserData(2) == 1
+            h.UserData.moveFrom = obj.UserData(1);
+            continueAllowed = 1;
+        elseif h.UserData.click == 2 && obj.UserData(2) == 0
+            %Delete old tag
+            delete(findobj('Position',[matrixToPosition(h.UserData.moveFrom,1) matrixToPosition(h.UserData.moveFrom,2) 0.5 0.5],'Tag','clickable'));
+            h.UserData.b(h.UserData.moveFrom) = 0;
+            h.UserData.moveTo = obj.UserData(1); 
+            continueAllowed = 1;
+        end
     end
     
-    %Delete old stone
-    delete(findobj('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'Tag','clickable'));
-    
-    %Set new, highlighted, stone
-    rectangle('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',h.UserData.m);
-    
-    %Show possible moves in phases 2&3
-    if h.UserData.ph1 == 2 || h.UserData.ph1 == 3
-        possibleMoves(h, h.UserData.m)
-    end
-    
-    if h.UserData.ph1 == 1 || (h.UserData.ph1 == 2 && h.UserData.click == 2)
-        uiresume(h);
-        h.UserData.b(h.UserData.m) = h.UserData.p;
+    if continueAllowed == 1
+        %Transfer index to h
+        h.UserData.m = obj.UserData(1);
+
+        %Delete old stone
+        delete(findobj('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'Tag','clickable'));
+
+        %Set new, highlighted, stone
+        rectangle('Position',[matrixToPosition(h.UserData.m,1) matrixToPosition(h.UserData.m,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',h.UserData.m);
+
+        %Show possible moves in phases 2&3
+        if h.UserData.ph1 == 2 || h.UserData.ph1 == 3
+            possibleMoves(h, h.UserData.m)
+        end
+
+        if h.UserData.ph1 == 1 || (h.UserData.ph1 == 2 && h.UserData.click == 2)
+            uiresume(h);
+            h.UserData.b(h.UserData.m) = h.UserData.p;
+        end
+    else
+        h.UserData.click = h.UserData.click - 1;
     end
 end
