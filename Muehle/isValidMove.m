@@ -1,14 +1,17 @@
 function v=isValidMove(board,selectedIndex,moveToIndex, playerType, phase1,phase2)
 %checks if the move made is valid
 
-if (playerType==1&&phase1==3) || (playerType==-1&&phase2==3)%valid move for phase 3?
+%Phase 3
+if (playerType==1&&phase1==3) || (playerType==-1&&phase2==3)
     if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
         v=0;
     else 
         v=1;
     end
 end
-if (playerType==1&&phase1==2) || (playerType==-1&&phase2==2)%valid move for phase 2?
+
+%Phase 2
+if (playerType==1&&phase1==2) || (playerType==-1&&phase2==2)
     [colSel,rowSel,pgSel]=ind2sub(size(board),selectedIndex);
     [~,~,pgMov]=ind2sub(size(board),moveToIndex);
    if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
@@ -25,7 +28,9 @@ if (playerType==1&&phase1==2) || (playerType==-1&&phase2==2)%valid move for phas
         v=1;
    end
 end
-if (playerType==1&&phase1==1) || (playerType==-1&&phase2==1)%valid move for phase 1?
+
+%Phase 1
+if (playerType==1&&phase1==1) || (playerType==-1&&phase2==1)
     if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)
     v = 0;
     else 
