@@ -62,17 +62,14 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
         else
-            b([moveFrom moveTo])=b([moveTo moveFrom]);
-            
-            disp("Selected Index:")
-            disp(moveFrom)
-            disp("Move to:")
-            disp(moveTo)
-            
+            b([moveFrom moveTo])=b([moveTo moveFrom]);   
         end
     end
     
-    if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
+    %Take away opponent's stone if you have a muehle
+    if checkMuehle(b,moveTo) 
+        
+        %Human Player
         if playerType==1
             disp('spieler hat eine Mühle gemacht');
             n=0;
@@ -91,6 +88,8 @@ while 1
                 end
                 b(stoneToRemove)=0; %removes stone from board
             end
+            
+        %AI
         else
             n=0;
             for l=1:numel(b)
@@ -104,6 +103,8 @@ while 1
             disp(['AI removed stone: ' num2str(bestStoneRemove)]);
             end
         end
+        
+        %Change phases (?)
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
             if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
                 if -playerType==1
