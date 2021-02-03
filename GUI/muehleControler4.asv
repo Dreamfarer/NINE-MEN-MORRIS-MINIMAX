@@ -67,7 +67,7 @@ while 1
             disp("Selected Index:")
             disp(moveFrom)
             disp("Move to:")
-            disp(moveTo)
+            disp(moveToIndex)
             
         end
     end
