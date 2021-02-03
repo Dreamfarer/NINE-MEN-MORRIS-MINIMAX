@@ -53,7 +53,7 @@ while 1
             b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
         end
     else %Move of AI
-        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase)
+        [~, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
         if phase2==1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
@@ -91,6 +91,7 @@ while 1
             if n==0
             else
             b(bestStoneRemove)=0;
+            disp(['AI removed stone: ' num2str(bestStoneRemove)]);
             end
         end
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
