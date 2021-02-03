@@ -17,6 +17,9 @@ if ~exist('startingPlayer','var')
     end
 end
 
+%TEMPPPPPPPPPPPPPPPPPPPPPPPPPPP:
+startingPlayer = -1
+
 %Create 3x3x3 board
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
     a = zeros(3,3,3); 
@@ -47,14 +50,17 @@ while 1
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
-            selectedStone = input(['Player chooses Stone: ']);
-            moveTo = input('and moves it to: ');
-            while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
-                selectedStone = input(['Not a valid move! Player ' num2str(playerType) ' chooses Stone: ']);
-                moveTo = input('and moves it to: ');
-                isValidMove(b,0,moveTo,playerType,phase1,phase2);
-            end
-            b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
+            %selectedStone = input(['Player chooses Stone: ']);
+            %moveTo = input('and moves it to: ');
+            %while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
+            %    selectedStone = input(['Not a valid move! Player ' num2str(playerType) ' chooses Stone: ']);
+            %    moveTo = input('and moves it to: ');
+            %    isValidMove(b,0,moveTo,playerType,phase1,phase2);
+            %end
+            %b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
+            
+            b = GUI(b, playerType, phase1, phase2)
+            
         end
     
     %AI Player    

@@ -16,6 +16,7 @@ h.UserData.b = board;
 h.UserData.p = playerType;
 h.UserData.ph1 = phase1;
 h.UserData.ph2 = phase2;
+h.UserData.click = 0;
 
 %First Click: Choose which to move
 %(Show in color which stone was selected)
@@ -24,26 +25,9 @@ if abs(playerType)==1
     uiwait(h); 
 end
 
-%disp("First Click")
-
-%Second Click: Select where to move
-%(Show in color to which position can the stone be put)
-
-%updateBoard(h);
-%if abs(playerType)==1
-    %uiwait(h); 
-%end
-
-%disp("Second Click")
-
 newboard = h.UserData.b;
 
 end
-
-%TO DO LIST
-%only make stones selectable which belong to the player
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Update board with matrix of Luca
@@ -72,7 +56,10 @@ function updateBoard(h)
         end  
     end
     
-    possibleMoves(h, 0)
+    %Show possible moves for phase 1 (Phase 2&3 must wait for a first click)
+    if h.UserData.ph1 == 1
+        possibleMoves(h, 0)
+    end
     
     drawnow 
 end
@@ -82,34 +69,26 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function possibleMoves(h, index)
 
+board = h.UserData.b;
+playerType = h.UserData.p;
+phase1 = h.UserData.ph1;
+phase2 = h.UserData.ph2;
+
 A = [1 2 3 4 6 7 8 9 10 11 12 13 15 16 17 18 19 20 21 22 24 25 26 27];
+B = [NaN];
 
-%Phase 1
-if h.UserData.ph1 == 1
-    
-    B = [NaN];
-    for i=A
-        if (isValidMove(h.UserData.b, index, i, h.UserData.p, h.UserData.ph1, h.UserData.ph2)) == 1
-            B(end+1) = i;
-        end
+%Get all valid moves
+for i=A
+    if (isValidMove(board, index, i, playerType , phase1, phase2)) == 1
+        B(end+1) = i;
     end
-    B(1) = [];
-    
-    for i=B
-        
-        color = [0 1 0 0.5]
-        rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i,'Tag','clickable','ButtonDownFcn',@clickedCallback);   
-    end
-    
-    disp("löl")
-    
-elseif h.UserData.ph1 == 2
-    
-elseif h.UserData.ph1 == 3
-    
-else
-    disp("Error: No recognized phase!")
+end
 
+%Draw all the valid moves
+B(1) = [];
+for i=B   
+    color = [0 1 0 0.5]
+    rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',i,'Tag','clickable','ButtonDownFcn',@clickedCallback);   
 end
 end
 
@@ -118,38 +97,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function position = matrixToPosition(x,y)
 
-%Get index of Luca's matrix and return the cooresponding 2D position
-
-A = [
-    0 6;
-    0 3; 
-    0 0;
-    3 6;
-    NaN NaN;
-    3 0;
-    6 6;
-    6 3;
-    6 0;
-    1 5;
-    1 3;
-    1 1;
-    3 5;
-    NaN NaN;
-    3 1;
-    5 5;
-    5 3;
-    5 1;
-    2 4;
-    2 3;
-    2 2;
-    3 4;
-    NaN NaN;
-    3 2;
-    4 4;
-    4 3;
-    4 2;
-];
-
+A = [0 6; 0 3; 0 0; 3 6; NaN NaN; 3 0; 6 6; 6 3; 6 0; 1 5; 1 3; 1 1; 3 5; NaN NaN; 3 1; 5 5; 5 3; 5 1; 2 4; 2 3; 2 2; 3 4; NaN NaN; 3 2; 4 4; 4 3; 4 2;];
 position = A(x,y)-0.25;
 
 end
@@ -176,49 +124,29 @@ function clickedCallback(obj,evt)
     h.UserData.m = obj.UserData;
     h.UserData.b(h.UserData.m)=h.UserData.p;
     
-    disp(obj.UserData)
+    h.UserData.click = h.UserData.click + 1;
     
-    showSelectedStone(h.UserData.b, h.UserData.m, h.UserData.p, h.UserData.ph1, h.UserData.ph2); %den neuen Mark anzeigen
-    uiresume(h);
+    showSelectedStone(h.UserData.b, h.UserData.m, h.UserData.p, h.UserData.ph1, h.UserData.ph2, h.UserData.click); %den neuen Mark anzeigen
+    
+    if h.UserData.ph1 == 1 || (h.UserData.ph1 == 2 && h.UserData.click == 2)
+        uiresume(h);
+        h.UserData.b(h.UserData.m) = h.UserData.p;
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Show selected stone
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function showSelectedStone(h,index,playerType, phase1, phase2)
-    delete(findobj('Position',[matrixToPosition(index,1) matrixToPosition(index,2) 0.5 0.5],'Tag','clickable'));
-    rectangle('Position',[matrixToPosition(index,1) matrixToPosition(index,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',index,'Tag','clickable','ButtonDownFcn',@clickedCallback);
-    
-    
-    h(index) = 1;
-    
-    %Show possible next moves here because we got the index
-    %Test withou 5, 14, 23
-    %for i=[1 2 3 4 6 7 8 9 10 11 12 13 15 16 17 18 19 20 21 22 24 25 26 27]
-    %    isValidMove(h,index,i,playerType,phase1,phase2)
-    %end
-
-end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Show the next one
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function showGuiMove(h,index,playerType)
-    rectangle('Position',[matrixToPosition(index,1) matrixToPosition(index,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',index,'Tag','clickable','ButtonDownFcn',@clickedCallback);
+function showSelectedStone(h,index,playerType, phase1, phase2, click)
+    %Delete old stone
     delete(findobj('Position',[matrixToPosition(index,1) matrixToPosition(index,2) 0.5 0.5],'Tag','clickable'));
     
-        %Show possible next moves here because we got the index
-    %Test withou 5, 14, 23
-    for i=[1 2 3 4 6 7 8 9 10 11 12 13 15 16 17 18 19 20 21 22 24 25 26 27]
-        isValidMove(h,index,i,playerType,phase1,phase2)
+    %Set new, highlighted, stone
+    rectangle('Position',[matrixToPosition(index,1) matrixToPosition(index,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',index,'Tag','clickable','ButtonDownFcn',@clickedCallback);
+        
+    if phase1 == 2 || phase1 == 3
+        possibleMoves(h, index)
     end
     
 end
-
-
-
-
-
-
-
 
