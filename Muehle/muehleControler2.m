@@ -70,15 +70,15 @@ while 1
             b(stoneToRemove)=0; %removes stone from board
         end
         
-        if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
-            if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
-                if -playerType==1
-                    phase1=3;
-                else
-                    phase2=3;
-                end
+        
+        if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
+            if -playerType==1
+                phase1=3;
+            else
+                phase2=3;
             end
         end
+        
     end
     
     isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);

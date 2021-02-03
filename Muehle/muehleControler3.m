@@ -5,9 +5,9 @@ function b=muehleControler3(b,startingPlayer)
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
 
-phase1=2;
-phase2=2;
-stonesBeginningPhase=0;
+phase1=1;
+phase2=1;
+stonesBeginningPhase=18;
 
 if ~exist('startingPlayer','var')
     startingPlayer = 1;
@@ -19,16 +19,11 @@ end
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
     a = zeros(3,3,3); 
     a(2,2,:) = NaN; %NaN at every middle position since muehle has no middle position in each layer
-%     b=a;
-
-%testboard:
-a([1 2 6 17 22])=1;
-a([7 8 15 18 11])=-1;
-b=a;
-
+    b=a;
 end
 
 playerType = startingPlayer;
+
 
 while 1   
     disp(b); %show current board
@@ -58,8 +53,9 @@ while 1
             b([selectedStone moveTo]) = b([moveTo selectedStone]); %switch the 2 indices
         end
     else %Move of AI
-        [~, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase)
+        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase)
         if phase2==1
+            stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
         else
             b([moveFrom moveTo])=b([moveTo moveFrom]);
@@ -67,7 +63,7 @@ while 1
     end
     
     if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
-        if PlayerType==1
+        if playerType==1
             disp('spieler hat eine Mühle gemacht');
             n=0;
             for l=1:numel(b)
@@ -86,7 +82,16 @@ while 1
                 b(stoneToRemove)=0; %removes stone from board
             end
         else
+            n=0;
+            for l=1:numel(b)
+                if validRemove(b,playerType,l) %check if there are any possible stones to remove
+                    n=n+1;
+                end
+            end
+            if n==0
+            else
             b(bestStoneRemove)=0;
+            end
         end
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
             if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
