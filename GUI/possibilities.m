@@ -30,7 +30,7 @@ if ~isempty(B)
     if mode == "move"
         color = [0 1 0 0.5];
     else
-        color = [1 1 1 0.5];
+        color = [1 1 0 0.5];
     end
 
     %'UserData, i = index, 0: possible moves, -1: black, 1: white
