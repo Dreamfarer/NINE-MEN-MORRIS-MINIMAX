@@ -18,7 +18,7 @@ if ~exist('startingPlayer','var')
 end
 
 %TEMPPPPPPPPPPPPPPPPPPPPPPPPPPP:
-startingPlayer = -1;
+startingPlayer = 1;
 
 %Create 3x3x3 board
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
