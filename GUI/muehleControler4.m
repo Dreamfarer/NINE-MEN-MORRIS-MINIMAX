@@ -40,7 +40,7 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1; 
             
             %Call GUI and do the magik
-            [b, moveTo] = GUI(b, playerType, phase1, phase2);
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move");
             
             if stonesBeginningPhase==0
                 disp('end of Phase 1');
@@ -51,7 +51,7 @@ while 1
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
             
-            [b, moveTo] = GUI(b, playerType, phase1, phase2);
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move");
             
         end
     
@@ -71,23 +71,8 @@ while 1
         
         %Human Player
         if playerType==1
-            disp('spieler hat eine Mühle gemacht');
-            n=0;
-            for l=1:numel(b)
-                if validRemove(b,playerType,l) %check if there are any possible stones to remove
-                    n=n+1;
-                end
-            end
-            if n==0
-                disp('no possible stones to remove');
-            else
-                stoneToRemove=input('entferne Stein: ');
-                while ~(validRemove(b, playerType, stoneToRemove)) 
-                    stoneToRemove=input('nicht gültiger Input! Entferne Stein: ');
-                    validRemove(b, playerType, stoneToRemove);
-                end
-                b(stoneToRemove)=0; %removes stone from board
-            end
+            
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "remove");
             
         %AI
         else
