@@ -46,10 +46,13 @@ function clickedCallback(obj,evt)
 
         %Show possible moves in phases 2&3
         if muehleFigure.UserData.phase(1) == 2 || muehleFigure.UserData.phase(1) == 3
+            delete(findobj(gca,'Type','text'));
+            text(0.25,-1,"Chose where to put it",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
             possibilities(muehleFigure, muehleFigure.UserData.index, "move")
         end
 
         if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) == 2 && muehleFigure.UserData.click == 2)
+            
             uiresume(muehleFigure);
             muehleFigure.UserData.board(muehleFigure.UserData.index) = muehleFigure.UserData.playerType;
         end

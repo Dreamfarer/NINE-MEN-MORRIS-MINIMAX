@@ -5,6 +5,7 @@ function updateBoard(muehleFigure)
     
     %Delete old entries
     delete(findobj(gca,'Type','rectangle'));
+    delete(findobj(gca,'Type','text'));
     
     %Draw background
     drawBoard();
@@ -33,10 +34,16 @@ function updateBoard(muehleFigure)
     
     %Show possible moves for phase 1
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
+        text(0.25,-1,"Place a stone",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
         possibilities(muehleFigure, 0, "move")
+        
+    elseif muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.mode == "move"
+        
+        text(0.25,-1,"Chose a stone to move",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
         
     %Show possible stones to remove if a 'muehle' has been made    
     elseif muehleFigure.UserData.mode == "remove"
+        text(0.25,-1,"Remove a stone",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
         possibilities(muehleFigure, muehleFigure.UserData.index, "remove")
     end 
     
@@ -55,5 +62,7 @@ function drawBoard()
     line([3 3],[0 6],'Color','black','Clipping', 'off', 'LineWidth',lineWidth)
     rectangle('Position',[1 1 4 4],'LineWidth',lineWidth,'Clipping','off','FaceColor',[0 0 0 0])
     rectangle('Position',[2 2 2 2],'LineWidth',lineWidth,'Clipping','off','FaceColor',[1 1 1 1])
+    
+    rectangle('Position',[0 -1.5 6 1],'LineWidth',lineWidth,'Clipping','off','FaceColor',[1 1 1 1])
 
 end

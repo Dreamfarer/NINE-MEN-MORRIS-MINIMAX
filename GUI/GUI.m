@@ -8,7 +8,9 @@ if isempty(muehleFigure)
     muehleFigure = figure('Name','Muehle');
     axis off; axis square,  
     xlim([0 6]); 
-    ylim([0 6]);    
+    ylim([0 6]);
+    set(gcf, 'Position',  [100, 100, 700, 800])
+    set(gca, 'ylim', get(gca, 'ylim')-0.5)
 end
 
 %Initialize UserData for later use
