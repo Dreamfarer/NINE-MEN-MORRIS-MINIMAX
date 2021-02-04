@@ -4,7 +4,6 @@ function b=muehleControler4(b,startingPlayer)
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
-
 phase1=1;
 phase2=1;
 stonesBeginningPhase=18;
@@ -17,8 +16,7 @@ if ~exist('startingPlayer','var')
     end
 end
 
-%TEMPPPPPPPPPPPPPPPPPPPPPPPPPPP:
-startingPlayer = 1;
+playerType = startingPlayer;
 
 %Create 3x3x3 board
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
@@ -26,8 +24,6 @@ if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create boa
     a(2,2,:) = NaN; %NaN at every middle position since muehle has no middle position in each layer
     b=a;
 end
-
-playerType = startingPlayer;
 
 while 1
     %Human Player
@@ -41,12 +37,6 @@ while 1
             
             %Call GUI and do the magik
             [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move");
-            
-            if stonesBeginningPhase==0
-                disp('end of Phase 1');
-                phase1=2;
-                phase2=2;
-            end
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
@@ -62,9 +52,18 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
         else
-            b([moveFrom moveTo])=b([moveTo moveFrom]);   
+            b([moveFrom moveTo])=b([moveTo moveFrom]); 
         end
     end
+    
+    if stonesBeginningPhase==0 && phase1 == 1 && phase2 == 1
+        disp('end of Phase 1');
+        phase1=2;
+        phase2=2;
+    end
+    
+    disp("Stones left:")
+    disp(stonesBeginningPhase)
     
     %Take away opponent's stone if you have a muehle
     if checkMuehle(b,moveTo) 
