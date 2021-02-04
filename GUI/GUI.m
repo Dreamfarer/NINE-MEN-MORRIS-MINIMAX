@@ -22,7 +22,11 @@ muehleFigure.UserData.mode = mode;
 muehleFigure.UserData.index = 0;
 
 %Draw board and handle input
-updateBoard(muehleFigure);
+if phase(3) == 2
+   updateBoard(muehleFigure);
+elseif phase(3) == 3
+    disp(['Player ' num2str(playerType) ' won!'])
+end
 
 %Wait for 'uiresume' to be called, to continue
 if abs(playerType)==1

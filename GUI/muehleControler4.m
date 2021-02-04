@@ -36,12 +36,12 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1; 
             
             %Call GUI and do the magik
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move");
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
             
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move");
             
         end
     
@@ -74,7 +74,7 @@ while 1
         %Human Player
         if playerType==1
             
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "remove");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "remove");
             
         %AI
         else
@@ -107,8 +107,7 @@ while 1
     %Check if game is over
     isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
     if(isOver)
-        disp(b);
-        disp(['Player ' num2str(playerType) ' won!'])
+        GUI(b, playerType, [phase1 phase2 3], "move");
         break; 
     end
     playerType = -playerType;
