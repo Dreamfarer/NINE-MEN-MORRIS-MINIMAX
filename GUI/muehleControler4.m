@@ -27,6 +27,7 @@ end
 
 moveTo = NaN;
 moveFrom = NaN;
+bestStoneRemove = NaN;
 
 while 1
     %Human Player
