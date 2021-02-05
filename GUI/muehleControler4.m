@@ -25,6 +25,9 @@ if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create boa
     b=a;
 end
 
+moveTo = NaN;
+moveFrom = NaN;
+
 while 1
     %Human Player
     if playerType == 1 
@@ -36,12 +39,12 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1; 
             
             %Call GUI and do the magik
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move", [moveFrom moveTo]);
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
             
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move", [moveFrom moveTo]);
             
         end
     
@@ -74,7 +77,7 @@ while 1
         %Human Player
         if playerType==1
             
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "remove");
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "remove", [moveFrom moveTo]);
             
         %AI
         else
