@@ -56,21 +56,12 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
             disp(['AI placed stone at: ' num2str(moveTo)]);
+            moveFrom = NaN;
         else
             b([moveFrom moveTo])=b([moveTo moveFrom]); 
-            disp(['AI moved stone from: ' num2str(moveFrom)]);
-            disp(['to: ' num2str(moveTo)]);
+            disp(['AI moved stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
         end
     end
-    
-    if stonesBeginningPhase==0 && phase1 == 1 && phase2 == 1
-        disp('end of Phase 1');
-        phase1=2;
-        phase2=2;
-    end
-    
-    disp("Stones left:")
-    disp(stonesBeginningPhase)
     
     %Take away opponent's stone if you have a muehle
     if checkMuehle(b,moveTo) 
@@ -105,6 +96,14 @@ while 1
                 end
             end
         end
+        
+    end
+    
+    %Change Phase from 1 to 2
+    if stonesBeginningPhase==0 && phase1 == 1 && phase2 == 1
+        disp('end of Phase 1');
+        phase1=2;
+        phase2=2;
         
     end
     

@@ -23,10 +23,7 @@ muehleFigure.UserData.moveTo = 0;
 muehleFigure.UserData.mode = mode;
 muehleFigure.UserData.index = 0;
 
-disp("GUI: AI moved from:")
-disp(moves(1))
-disp("to:")
-disp(moves(2))
+muehleFigure.UserData.AI = [moves(1) moves(2) moves(3)];
 
 %Draw board and handle input
 if phase(3) == 2

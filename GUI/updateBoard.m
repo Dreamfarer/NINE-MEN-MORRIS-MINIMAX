@@ -13,7 +13,7 @@ function updateBoard(muehleFigure)
     %Draw the current Nine-Men-Morris board
     for i = 1:27
         
-        if isnan(matrixToPosition(i,1)) == false && isnan(matrixToPosition(i,2)) == false && muehleFigure.UserData.board(i) ~= 0
+        if isnan(matrixToPosition(i, 1, "rectangle")) == false && isnan(matrixToPosition(i, 2, "rectangle")) == false && muehleFigure.UserData.board(i) ~= 0
             
             %Decide which color to draw
             if muehleFigure.UserData.board(i) == 1
@@ -23,10 +23,10 @@ function updateBoard(muehleFigure)
             end
             
             %Decide if a callback should be added
-            if muehleFigure.UserData.phase(1) >= 1 && muehleFigure.UserData.board(i) == 1
-                rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)],'Tag','clickable','ButtonDownFcn',@clickedCallback);
+            if muehleFigure.UserData.phase(1) >= 1 && muehleFigure.UserData.board(i) == 1 && muehleFigure.UserData.mode == "move"
+                rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)],'Tag','clickable','ButtonDownFcn',@clickedCallback);
             else
-                rectangle('Position',[matrixToPosition(i,1) matrixToPosition(i,2) 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)]);
+                rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)]);
             end
             
         end  
@@ -47,6 +47,10 @@ function updateBoard(muehleFigure)
         possibilities(muehleFigure, muehleFigure.UserData.index, "remove")
     end 
     
+    if muehleFigure.UserData.mode ~= "remove"
+        showAIMoves(muehleFigure);
+    end
+    
     %Update figures and process callbacks
     drawnow 
 end
@@ -54,7 +58,17 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Display AI moves
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function showAIMoves()
+function showAIMoves(muehleFigure)
+    
+if muehleFigure.UserData.phase(1) == 1
+    
+elseif muehleFigure.UserData.phase(1) > 1 && ~isnan(muehleFigure.UserData.AI(1)) && ~isnan(muehleFigure.UserData.AI(2))
+    
+    point1 = [matrixToPosition(muehleFigure.UserData.AI(1), 1, "line") matrixToPosition(muehleFigure.UserData.AI(2), 1, "line")];
+    point2 = [matrixToPosition(muehleFigure.UserData.AI(1), 2, "line") matrixToPosition(muehleFigure.UserData.AI(2), 2, "line")];
+    
+    line(point1,point2,'Color','red','Clipping', 'off', 'LineWidth', 5)
+end
 
 end
 
