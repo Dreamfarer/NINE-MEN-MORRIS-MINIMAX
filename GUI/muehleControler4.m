@@ -44,13 +44,10 @@ while 1
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
-<<<<<<< HEAD
+
             b
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move");
-=======
-            
             [b, moveTo] = GUI(b, playerType, [phase1 phase2 2], "move", [moveFrom moveTo bestStoneRemove]);
->>>>>>> 4551a9d56e55f6afb5730b7792fd06b3ddab325c
+
             
         end
     
