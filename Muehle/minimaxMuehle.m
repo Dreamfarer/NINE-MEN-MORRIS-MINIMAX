@@ -1,9 +1,9 @@
 function [bestScore, bestMoveFrom, bestMoveTo, bestStoneRemove] = minimaxMuehle(board, depth, phase1, phase2, playerType,stonesBeginningPhase)
 
 
-bestMoveFrom=1;
-bestMoveTo=1;
-bestStoneRemove=1;
+bestMoveFrom=0;
+bestMoveTo=0;
+bestStoneRemove=0;
 
 if stonesBeginningPhase==0 && phase1==1
     phase1=2;
