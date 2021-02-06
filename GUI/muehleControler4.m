@@ -70,7 +70,9 @@ while 1
                             break;
                         end
                     end
-                    break;
+                    if moveFrom~=0
+                        break;
+                    end
                 end
             end
             disp(['AI wants to move stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
@@ -94,7 +96,7 @@ while 1
             
             possibleRemoves=[];
             for l=1:numel(b)
-                if validRemove(childboard,playerType,l) %check if there are any possible stones to remove
+                if validRemove(b,playerType,l) %check if there are any possible stones to remove
                     possibleRemoves=[possibleRemoves,l];
                 end
             end
