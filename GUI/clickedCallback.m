@@ -19,6 +19,7 @@ function clickedCallback(obj,evt)
         %Transfer index to muehleFigure
         muehleFigure.UserData.index = obj.UserData(1);
         muehleFigure.UserData.board(muehleFigure.UserData.index) = 0;
+        disp("Removed or what?")
         uiresume(muehleFigure);
         
     elseif muehleFigure.UserData.phase(1) >= 2
@@ -27,7 +28,7 @@ function clickedCallback(obj,evt)
             continueAllowed = 1;
         elseif muehleFigure.UserData.click == 2 && obj.UserData(2) == 0
             %Delete old tag
-            delete(findobj('Position',[matrixToPosition(muehleFigure.UserData.moveFrom,1) matrixToPosition(muehleFigure.UserData.moveFrom,2) 0.5 0.5],'Tag','clickable'));
+            delete(findobj('Position',[matrixToPosition(muehleFigure.UserData.moveFrom, 1, "rectangle") matrixToPosition(muehleFigure.UserData.moveFrom, 2, "rectangle") 0.5 0.5],'Tag','clickable'));
             muehleFigure.UserData.board(muehleFigure.UserData.moveFrom) = 0;
             muehleFigure.UserData.moveTo = obj.UserData(1); 
             continueAllowed = 1;
@@ -39,17 +40,20 @@ function clickedCallback(obj,evt)
         muehleFigure.UserData.index = obj.UserData(1);
 
         %Delete old stone
-        delete(findobj('Position',[matrixToPosition(muehleFigure.UserData.index,1) matrixToPosition(muehleFigure.UserData.index,2) 0.5 0.5],'Tag','clickable'));
+        delete(findobj('Position',[matrixToPosition(muehleFigure.UserData.index, 1, "rectangle") matrixToPosition(muehleFigure.UserData.index, 2, "rectangle") 0.5 0.5],'Tag','clickable'));
 
         %Set new, highlighted, stone
-        rectangle('Position',[matrixToPosition(muehleFigure.UserData.index,1) matrixToPosition(muehleFigure.UserData.index,2) 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',muehleFigure.UserData.index);
+        rectangle('Position',[matrixToPosition(muehleFigure.UserData.index, 1, "rectangle") matrixToPosition(muehleFigure.UserData.index, 2, "rectangle") 0.5 0.5],'FaceColor',[0.5 0.25 1 1],'Clipping','off','UserData',muehleFigure.UserData.index);
 
         %Show possible moves in phases 2&3
         if muehleFigure.UserData.phase(1) == 2 || muehleFigure.UserData.phase(1) == 3
+            delete(findobj(gca,'Type','text'));
+            text(0.25,-1,"Chose where to put it",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
             possibilities(muehleFigure, muehleFigure.UserData.index, "move")
         end
 
         if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) == 2 && muehleFigure.UserData.click == 2)
+            
             uiresume(muehleFigure);
             muehleFigure.UserData.board(muehleFigure.UserData.index) = muehleFigure.UserData.playerType;
         end
