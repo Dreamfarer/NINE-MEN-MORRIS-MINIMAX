@@ -35,7 +35,7 @@ function updateBoard(muehleFigure)
     %Show possible moves for phase 1
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
         displayText("Place a stone", [0 0 0], 0.07);
-        possibilities(muehleFigure, 0, "move")
+        possibilities(muehleFigure, 0, "move");
         
     elseif muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.mode == "move"
         displayText("Chose a stone to move", [0 0 0], 0.07);
@@ -43,7 +43,9 @@ function updateBoard(muehleFigure)
     %Show possible stones to remove if a 'muehle' has been made    
     elseif muehleFigure.UserData.mode == "remove" 
         displayText("Remove a stone", [0 0 0], 0.07);
-        possibilities(muehleFigure, muehleFigure.UserData.index, "remove")
+        if isnan(possibilities(muehleFigure, muehleFigure.UserData.index, "remove"))
+            uiresume(muehleFigure);
+        end
     end 
     
     %Show which move the AI has made
@@ -60,7 +62,7 @@ function updateBoard(muehleFigure)
             message = "GOFAI has won. Shame on you!";
         end
         
-        displayText(message, [0 0 0], 0.07);
+        displayText(message, [0 0 0], 0.06);
     end
     
     if muehleFigure.UserData.mode == "waitForAI"

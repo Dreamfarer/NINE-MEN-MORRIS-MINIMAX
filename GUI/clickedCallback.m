@@ -50,9 +50,12 @@ function clickedCallback(obj,evt)
 
             displayText("Chose where to put it", [0 0 0], 0.07);
             
-            possibilities(muehleFigure, muehleFigure.UserData.index, "move")
+            if isnan(possibilities(muehleFigure, muehleFigure.UserData.index, "move"))
+                uiresume(muehleFigure);
+            end
+            
         end
-
+        
         if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.click == 2)
             
             uiresume(muehleFigure);
