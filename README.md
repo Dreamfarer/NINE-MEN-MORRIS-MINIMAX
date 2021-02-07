@@ -1,4 +1,4 @@
-# NineMenMorris-MiniMax
+# Nine-Men-Morris MiniMax
 
 Welcome to our school project! Play Nine-Men-Morris against our GOFAI.
 
@@ -7,6 +7,8 @@ Welcome to our school project! Play Nine-Men-Morris against our GOFAI.
 ### Play From Scratch
 
 **1** You will need MATLAB 2020 to run the .m file.
+
+**2** Be sure to add all file paths to MATLAB 2020 by going to Home/Set Path/Add with subfolders.
 
 **3** Open the file "muehleController5.m" under "Controllers" and run it inside MATLAB 2020.
 
