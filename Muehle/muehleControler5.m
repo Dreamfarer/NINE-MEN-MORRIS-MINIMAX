@@ -1,4 +1,4 @@
-function b=muehleControler4(b,startingPlayer)
+function b=muehleControler5(b,startingPlayer)
 %minimal Mühle controler for two human players, I/O via Command Window
 %inputs:
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
@@ -55,7 +55,7 @@ while 1
         %Call GUI to tell the player that AI is calculating
         GUI(b, playerType, [phase1 phase2], "waitForAI", [moveFrom moveTo bestStoneRemove]);
         
-        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
+        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle2(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
         if phase2==1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
@@ -133,7 +133,7 @@ while 1
     end
     
     %Check if game is over
-    isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
+    isOver = evaluateMuehleBoard2(b, 0, phase1, phase2, -playerType);
     if(isOver)
         GUI(b, playerType, [phase1 phase2], "GameOver", [moveFrom moveTo bestStoneRemove]);
         break; 
