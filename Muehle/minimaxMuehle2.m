@@ -22,8 +22,8 @@ end
 
 [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, playerType);
 if (isOver || depth==3)
-    bestScore=finscore %*(playerType);
-    disp(['best Score of this iteration: ' num2str(bestScore)]);
+    bestScore=finscore; %*(playerType);
+%     disp(['best Score of this iteration: ' num2str(bestScore)]);
 
     
 %     disp('simulated branch is over or AI looked ahead 3 moves');
@@ -151,7 +151,7 @@ else
                           for m=1:numel(possibleRemoves)
                               childboard(possibleRemoves(m))=0; %removes stone from board
 %                               disp(['they remove stone: ' num2str(possibleRemoves(m))]);
-                              disp(' ');
+%                               disp(' ');
                               score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
                               if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                                   (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
@@ -162,7 +162,7 @@ else
                                   bestMoveFrom=possibleFrom(i);
                                   bestMoveTo = possibleTo(k);
                                   bestStoneRemove=possibleRemoves(m);
-                                  disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
+%                                   disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
 %                                   disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                               end 
                           end
@@ -179,7 +179,7 @@ else
                             bestMoveFrom=possibleFrom(i);
                             bestMoveTo = possibleTo(k);
                             bestStoneRemove=0;
-                            disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
+%                             disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
 %                             disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                         end
                       end
@@ -198,7 +198,7 @@ else
                           bestMoveFrom=possibleFrom(i);
                           bestMoveTo = possibleTo(k);
                           bestStoneRemove=0;
-                          disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
+%                           disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
 %                           disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                       end 
    

@@ -42,5 +42,5 @@ elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
     end
 end
 
-disp(['finscore is: ' num2str(finscore)]);
+% disp(['finscore is: ' num2str(finscore)]);
 end
