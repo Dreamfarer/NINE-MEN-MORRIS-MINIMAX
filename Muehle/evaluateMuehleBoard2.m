@@ -5,7 +5,7 @@ function [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, p
 %   depth (default 0) allows to adjust the score by searchdepth
 % output:
 %   isOver specifies (0/1) if the current state is a final state
-%   finscore ist the payout for the final state (positive for p1 (=1/X), negative for p2(=-1/O)
+%   finscore ist the payout for the final state (positive for p1 (=1), negative for p2(=-1)
 
 
 
@@ -43,4 +43,10 @@ elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
 end
 
 % disp(['finscore is: ' num2str(finscore)]);
+
+% if checkMuehle(board, moveTo)
+%     finscore=finscore+(-playerType*4);
+% end
+
+
 end
