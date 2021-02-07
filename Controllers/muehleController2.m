@@ -1,7 +1,8 @@
 function b=muehleController2(b,startingPlayer)
-%minimal Mühle controler for two human players, I/O via Command Window
+%minimal Mühle controller for two human players, I/O via Command Window
 %inputs:
-%  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
+%  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white);
+%  -1=mark pl2(black); nan=not a valid space)
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
 
@@ -26,21 +27,26 @@ playerType = startingPlayer;
 
 while 1   
     disp(b); %show current board
+    
     if stonesBegnningPhase>0 %%check for phase 1
         moveTo = input(['Move of Player ' num2str(playerType) ':  ']);
+        
         while ~(isValidMove(b,0,moveTo,playerType,phase1,phase2))
             moveTo = input(['Not a valid move! Move of Player ' num2str(playerType) ':  ']);
             isValidMove(b,0,moveTo,playerType,phase1,phase2);
         end
+        
+        %Count down stones
         stonesBeginningPhase=stonesBeginningPhase-1;
         b(moveTo) = playerType;
+        
         if stonesBeginningPhase==0
             disp('end of Phase 1');
             phase1=2;
             phase2=2;
         end
         
-    else %%phase 2 or 3
+    else %phase 2 or 3
         selectedStone = input(['Player ' num2str(playerType) ' chooses Stone: ']);
         moveTo = input('and moves it to: ');
         while ~(isValidMove(b,selectedStone,moveTo,playerType,phase1,phase2)) %check for valid input/move
@@ -54,8 +60,8 @@ while 1
     if checkMuehle(b,moveTo) %take away opponent's stone if you have a muehle
         disp('spieler hat eine Mühle gemacht');
         n=0;
-        for i=1:numel(b)
-            if validRemove(b,playerType,i) %check if there are any possible stones to remove
+        for i=1:numel(b) %check if there are any possible stones to remove
+            if validRemove(b,playerType,i) 
                 n=n+1;
             end
         end
@@ -81,6 +87,7 @@ while 1
         
     end
     
+    %Check if game is over
     isOver = evaluateMuehleBoard(b, 0, phase1, phase2, -playerType);
     if(isOver)
         disp(b);

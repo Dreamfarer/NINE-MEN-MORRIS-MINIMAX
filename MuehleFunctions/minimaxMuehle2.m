@@ -1,5 +1,5 @@
 function [bestScore, bestMoveFrom, bestMoveTo, bestStoneRemove] = minimaxMuehle2(board, depth, phase1, phase2, playerType,stonesBeginningPhase, latestMoveTo)
-
+%improved minimax function for Muehle
 
 
 bestMoveFrom=0;
@@ -22,102 +22,75 @@ end
 
 [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, -playerType, latestMoveTo);
 if (isOver || depth==3)
-    bestScore=finscore; %*(playerType);
-%     disp(['best Score of this iteration: ' num2str(bestScore)]);
-
-    
-%     disp('simulated branch is over or AI looked ahead 3 moves');
-%     disp(['best Score of this simulation is: ' num2str(bestScore)]);
-%     disp(['best Move of this simulation is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
+    bestScore=finscore; 
 else
     
-    bestScore =  -Inf * playerType;
+    bestScore =  -Inf * playerType; %worst possible case
     
     if phase1==1
         
-%         disp([num2str(playerType) ' makes a move in phase 1']);
-        availableSpaces=find(board==0);
+        availableSpaces=find(board==0); %find all empty spaces
         
-%         disp('They can place a stone at these spaces: ');
-%         availableSpaces
-        
-        for i=1:numel(availableSpaces(:))
+        for i=1:numel(availableSpaces(:)) 
             childboard=board;
-            childboard(availableSpaces(i))=playerType;
-%             disp(['they place a stone on space: ' num2str(availableSpaces(i))]);
+            childboard(availableSpaces(i))=playerType; %place stone
+
             if checkMuehle(childboard,availableSpaces(i)) %take away opponent's stone if you have a muehle
-%                 disp('with this move, the player made a mill');
-%                 childboard
-                possibleRemoves=[];
+
+                possibleRemoves=[]; %find stones that can be removed
                 for j=1:numel(childboard)
-                    if validRemove(childboard,playerType,j) %check if there are any possible stones to remove
+                    if validRemove(childboard,playerType,j) 
                         possibleRemoves=[possibleRemoves,j];
                     end
                 end
                 if ~isempty(possibleRemoves)
-                    
-%                     disp('they can remove these stones: ');
-%                     possibleRemoves
-                    
                     for k=1:numel(possibleRemoves)
                         childboard(possibleRemoves(k))=0; %removes stone from board
-%                         disp(['they remove stone: ' num2str(possibleRemoves(k))]);
-%                         disp(' ');
-                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
+
+                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i)); %recursive call of minimax function
+                        
+                        %update move if better score
                         if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                             (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                             disp('this move is better than the last one');
-%                             disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                             disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                             bestScore = score;
                             bestMoveTo = availableSpaces(i);
                             bestStoneRemove=possibleRemoves(k);
-%                             disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                             disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                         end 
                     end
                 else
-%                     disp('unfortunately they can''t remove any stone');
-%                     disp(' ');
-                    score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
+                    %made muehle but no removable stones
+                    score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i)); %recursive call of minimax function
+                    
+                    %update move if better score
                     if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                         (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                         disp('this move is better than the last one');
-%                         disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                         disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                         bestScore = score;
                         bestMoveTo = availableSpaces(i);
                         bestStoneRemove=0;
-%                         disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                         disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                     end  
                 end
                 
             
             else
-%                 disp('no mill, continue normally');
-%                 disp(' ');
-                score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
+                %no muehle made
+                score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i)); %recursive call of minimax function
+                
+                %update move if better score
                 if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                     (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                     disp('this move is better than the last one');
-%                     disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                     disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                     bestScore = score;
                     bestMoveTo = availableSpaces(i);
                     bestStoneRemove=0;
-%                     disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                     disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                 end     
             end
         end
         
     else %phase 2&3
-%         disp([num2str(playerType) ' makes a move in phase 2 or 3']);
-        possibleFrom=(find(board==playerType));
+%         
+        possibleFrom=(find(board==playerType)); %can only move own stones
         
         for i=1:numel(possibleFrom)
-            possibleTo=[];
+            possibleTo=[]; %find all possible moves for selected Stone
             for j=1:numel(board)
                 if isValidMove(board,possibleFrom(i),j,playerType,phase1,phase2)
                     possibleTo=[possibleTo, j];
@@ -127,96 +100,64 @@ else
             
             
             if ~isempty(possibleTo)
-                
-%                disp(['they can move stone ' num2str(possibleFrom(i)) ' to: ']);
-%                possibleTo
-               
                for k=1:numel(possibleTo)
                   childboard=board;
-                  childboard([possibleFrom(i), possibleTo(k)])=childboard([possibleTo(k), possibleFrom(i)]);
-%                   disp(['they move stone ' num2str(possibleFrom(i)) ' to: ' num2str(possibleTo(k))]);
+                  childboard([possibleFrom(i), possibleTo(k)])=childboard([possibleTo(k), possibleFrom(i)]);%move Stone
+                  
                   if checkMuehle(childboard,possibleTo(k)) %take away opponent's stone if you have a muehle
-%                       disp('with this move, the player made a mill');
-                      possibleRemoves=[];
+                      possibleRemoves=[];%find stones that can be removed
                       for l=1:numel(childboard)
-                          if validRemove(childboard,playerType,l) %check if there are any possible stones to remove
+                          if validRemove(childboard,playerType,l)
                               possibleRemoves=[possibleRemoves,l];
                           end
                       end
                       if ~isempty(possibleRemoves)
                           
-%                           disp('they can remove these stones: ');
-%                           possibleRemoves
-                          
                           for m=1:numel(possibleRemoves)
                               childboard(possibleRemoves(m))=0; %removes stone from board
-%                               disp(['they remove stone: ' num2str(possibleRemoves(m))]);
-%                               disp(' ');
-                              score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
+                              
+                              score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));%recursive call of minimax function
+                              
+                              %update move if better score
                               if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                                   (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                                   disp('this move is better than the last one');
-%                                   disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                                   disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                                   bestScore = score;
                                   bestMoveFrom=possibleFrom(i);
                                   bestMoveTo = possibleTo(k);
                                   bestStoneRemove=possibleRemoves(m);
-%                                   disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                                   disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                               end 
                           end
                       else
-%                         disp('unfortunately they can''t remove any stone');
-%                         disp(' ');
-                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
+                        %made muehle but no removable stones
+                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));%recursive call of minimax function
+                        
+                        %update move if better score
                         if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                             (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                             disp('this move is better than the last one');
-%                             disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                             disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                             bestScore = score;
                             bestMoveFrom=possibleFrom(i);
                             bestMoveTo = possibleTo(k);
                             bestStoneRemove=0;
-%                             disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                             disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                         end
                       end
                       
                       
                   else
-%                       disp('no mill, continue normally');
-%                       disp(' ');
-                      score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
+                      %no muehle made
+                      score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));%recursive call of minimax function
+                      
+                      %update move if better score
                       if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                         (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
-%                           disp('this move is better than the last one');
-%                           disp(['best score in depth ' num2str(depth) ' before was: ' num2str(bestScore)]);
-%                           disp(['best move in depth ' num2str(depth) ' before was: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                           bestScore = score;
                           bestMoveFrom=possibleFrom(i);
                           bestMoveTo = possibleTo(k);
                           bestStoneRemove=0;
-%                           disp(['best score in depth ' num2str(depth) ' now is: ' num2str(bestScore)]);
-%                           disp(['best move in depth ' num2str(depth) ' now is: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
                       end 
-   
                   end
                end
             end
-            
         end 
-        
     end
-    
 end
-
-% if bestScore==(Inf)
-%     disp(['This move changed bestScore to Inf: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
-% end
-
-
-% disp(['move of depth ' num2str(depth) ' that gets returned: ' num2str(bestMoveFrom) ', ' num2str(bestMoveTo) ', ' num2str(bestStoneRemove)]);
-% disp(' ');
 end

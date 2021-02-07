@@ -1,7 +1,7 @@
 function b=muehleController5(b,startingPlayer)
-%minimal Mühle controler for two human players, I/O via Command Window
+%Mühle controller for a human player and an improved AI, I/O via GUI
 %inputs:
-%  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
+%  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black); nan=not a valid space)
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
 phase1=1;
@@ -62,11 +62,9 @@ while 1
         if phase2==1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
-            %disp(['AI placed stone at: ' num2str(moveTo)]);
-            disp(['score of this move is: ' num2str(bestScore)]);
             moveFrom = NaN;
         else
-            if bestScore==(Inf)
+            if bestScore==(Inf) %AI knows that it loses -> makes the first move possible
                 possibleFrom=(find(b==playerType));
                 for i=1:numel(possibleFrom)
                     for j=1:numel(b)
@@ -81,12 +79,9 @@ while 1
                     end
                 end
             end
-            %disp(['AI wants to move stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
-            if bestScore~=10
-            disp(['score of this move is: ' num2str(bestScore)]);
+
             b([moveFrom moveTo])=b([moveTo moveFrom]); 
-            disp(['AI moved stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
-            end
+   
            
         end
     end
@@ -109,20 +104,19 @@ while 1
                 end
             end
             if ~isempty(possibleRemoves)
-                if bestScore~=(Inf)
+                if bestScore~=(Inf) 
                     b(bestStoneRemove)=0;
-                    
                     removedStone = bestStoneRemove;
-                else
+                else %AI knows that it loses -> makes the first remove possible if it makes a muehle by accident
                     b(possibleRemoves(1))=0;
                 end
             end
    
         end
         
-        %Change phases (?)
+        %Change opponent to phase 3 when they only have 3 stones remaining
         if (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)||(playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
-            if sum(b==-playerType,'all')==3 %change opponent's phase to 3 if they only have 3 stones left
+            if sum(b==-playerType,'all')==3 
                 if -playerType==1
                     phase1=3;
                 else
@@ -133,7 +127,7 @@ while 1
         
     end
     
-    %Change Phase from 1 to 2
+    %Change Phase from 1 to 2 after all stones have been placed
     if stonesBeginningPhase==0 && phase1 == 1 && phase2 == 1
         phase1=2;
         phase2=2;

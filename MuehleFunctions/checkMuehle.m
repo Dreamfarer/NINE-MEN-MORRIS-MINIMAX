@@ -1,5 +1,6 @@
 function m=checkMuehle(board,moveToIndex)
 %checks if player made a mühle with his recent move
+
 [colIdx, rowIdx,pgIdx]=ind2sub(size(board),moveToIndex);
 if moveToIndex==0
     m=0;

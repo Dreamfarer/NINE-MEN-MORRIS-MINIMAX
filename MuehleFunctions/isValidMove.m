@@ -3,7 +3,8 @@ function v=isValidMove(board,selectedIndex,moveToIndex, playerType, phase1,phase
 
 %Phase 3
 if (playerType==1&&phase1==3) || (playerType==-1&&phase2==3)
-    if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
+    if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)...
+            ||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
         v=0;
     else 
         v=1;
@@ -14,7 +15,8 @@ end
 if (playerType==1&&phase1==2) || (playerType==-1&&phase2==2)
     [colSel,rowSel,pgSel]=ind2sub(size(board),selectedIndex);
     [~,~,pgMov]=ind2sub(size(board),moveToIndex);
-   if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
+   if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)...
+           ||~(isfloat(selectedIndex) && isscalar(selectedIndex) && selectedIndex>0 && selectedIndex<=27)||(board(selectedIndex)~=playerType)%not possible index value, not empty field, not your stone
         v=0;
    elseif ~(abs(selectedIndex-moveToIndex)==1||abs(selectedIndex-moveToIndex)==3||abs(selectedIndex-moveToIndex)==9)%not even close to a possible move
         v=0;
@@ -31,7 +33,8 @@ end
 
 %Phase 1
 if (playerType==1&&phase1==1) || (playerType==-1&&phase2==1)
-    if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 && moveToIndex<=27 && board(moveToIndex)==0)
+    if ~(isfloat(moveToIndex) && isscalar(moveToIndex) && moveToIndex>0 ...
+            && moveToIndex<=27 && board(moveToIndex)==0) %not possible index value, not empty field
     v = 0;
     else 
     v=1;
