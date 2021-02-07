@@ -5,7 +5,6 @@ function updateBoard(muehleFigure)
     
     %Delete old entries
     delete(findobj(gca,'Type','rectangle'));
-    delete(findobj(gca,'Type','text'));
     
     %Draw background
     drawBoard();
@@ -34,11 +33,6 @@ function updateBoard(muehleFigure)
         end  
     end
     
-    %Show which move the AI has made
-    if muehleFigure.UserData.mode ~= "remove" && muehleFigure.UserData.mode ~= "GameOver" && muehleFigure.UserData.mode ~= "waitForAI"
-        showAIMoves(muehleFigure);
-    end
-    
     %Show possible moves for phase 1
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
         displayText("Place a stone", [0 0 0], 0.07);
@@ -56,6 +50,11 @@ function updateBoard(muehleFigure)
             uiresume(muehleFigure);
         end
     end 
+    
+    %Show which move the AI has made
+    if muehleFigure.UserData.mode ~= "remove" && muehleFigure.UserData.mode ~= "GameOver" && muehleFigure.UserData.mode ~= "waitForAI"
+        showAIMoves(muehleFigure);
+    end
     
     %Display the winner
     if muehleFigure.UserData.mode == "GameOver"
@@ -93,15 +92,8 @@ if muehleFigure.UserData.phase(1) > 1 && ~isnan(muehleFigure.UserData.AI(1)) && 
 end
 
 if ~isnan(muehleFigure.UserData.AI(3))
-    
-    xValue = matrixToPosition(muehleFigure.UserData.AI(3), 1, "line");
-    yValue = matrixToPosition(muehleFigure.UserData.AI(3), 2, "line");
-    
-    marker1 = text(xValue, yValue, "X",'FontUnits','normalized','FontSize',0.2,'HorizontalAlignment','center');
-    marker2 = text(xValue, yValue+0.6, "Removed by AI",'FontUnits','normalized','FontSize',0.03,'HorizontalAlignment','center');
-    
-    marker1(1).Color = [1 0 0];
-    marker2(1).Color = [1 0 0];
+    marker = text(matrixToPosition(muehleFigure.UserData.AI(3), 1, "line"), matrixToPosition(muehleFigure.UserData.AI(3), 2, "line"), "X",'FontUnits','normalized','FontSize',0.5,'HorizontalAlignment','center');
+    marker(1).Color = [];
 end
 
 end
