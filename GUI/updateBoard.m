@@ -22,8 +22,10 @@ function updateBoard(muehleFigure)
                 color = [0 0 0]; %Black
             end
             
+            possible = possibilities(muehleFigure, i, "move", false);
+            
             %Decide if a callback should be added
-            if muehleFigure.UserData.phase(1) >= 1 && muehleFigure.UserData.board(i) == 1 && muehleFigure.UserData.mode == "move"
+            if muehleFigure.UserData.phase(1) >= 1 && muehleFigure.UserData.board(i) == 1 && muehleFigure.UserData.mode == "move" && ~isnan(possible(1))
                 rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)],'Tag','clickable','ButtonDownFcn',@clickedCallback);
             else
                 rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData',[i muehleFigure.UserData.board(i)]);
@@ -35,7 +37,7 @@ function updateBoard(muehleFigure)
     %Show possible moves for phase 1
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
         displayText("Place a stone", [0 0 0], 0.07);
-        possibilities(muehleFigure, 0, "move");
+        possibilities(muehleFigure, 0, "move", true);
         
     elseif muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.mode == "move"
         displayText("Chose a stone to move", [0 0 0], 0.07);
@@ -43,7 +45,7 @@ function updateBoard(muehleFigure)
     %Show possible stones to remove if a 'muehle' has been made    
     elseif muehleFigure.UserData.mode == "remove" 
         displayText("Remove a stone", [0 0 0], 0.07);
-        if isnan(possibilities(muehleFigure, muehleFigure.UserData.index, "remove"))
+        if isnan(possibilities(muehleFigure, muehleFigure.UserData.index, "remove", true))
             uiresume(muehleFigure);
         end
     end 
