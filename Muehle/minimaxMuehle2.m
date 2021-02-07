@@ -1,4 +1,4 @@
-function [bestScore, bestMoveFrom, bestMoveTo, bestStoneRemove] = minimaxMuehle2(board, depth, phase1, phase2, playerType,stonesBeginningPhase)
+function [bestScore, bestMoveFrom, bestMoveTo, bestStoneRemove] = minimaxMuehle2(board, depth, phase1, phase2, playerType,stonesBeginningPhase, latestMoveTo)
 
 
 
@@ -20,7 +20,7 @@ elseif (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)
 end
 
 
-[isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, playerType);
+[isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, -playerType, latestMoveTo);
 if (isOver || depth==3)
     bestScore=finscore; %*(playerType);
 %     disp(['best Score of this iteration: ' num2str(bestScore)]);
@@ -63,7 +63,7 @@ else
                         childboard(possibleRemoves(k))=0; %removes stone from board
 %                         disp(['they remove stone: ' num2str(possibleRemoves(k))]);
 %                         disp(' ');
-                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
                         if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                             (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                             disp('this move is better than the last one');
@@ -79,7 +79,7 @@ else
                 else
 %                     disp('unfortunately they can''t remove any stone');
 %                     disp(' ');
-                    score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                    score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
                     if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                         (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                         disp('this move is better than the last one');
@@ -97,7 +97,7 @@ else
             else
 %                 disp('no mill, continue normally');
 %                 disp(' ');
-                score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, availableSpaces(i));
                 if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                     (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                     disp('this move is better than the last one');
@@ -150,9 +150,9 @@ else
                           
                           for m=1:numel(possibleRemoves)
                               childboard(possibleRemoves(m))=0; %removes stone from board
-%                               disp(['they remove stone: ' num2str(possibleRemoves(m))]);
-%                               disp(' ');
-                              score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                              disp(['they remove stone: ' num2str(possibleRemoves(m))]);
+                              disp(' ');
+                              score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
                               if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                                   (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                                   disp('this move is better than the last one');
@@ -169,7 +169,7 @@ else
                       else
 %                         disp('unfortunately they can''t remove any stone');
 %                         disp(' ');
-                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                        score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
                         if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                             (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                             disp('this move is better than the last one');
@@ -188,7 +188,7 @@ else
                   else
 %                       disp('no mill, continue normally');
 %                       disp(' ');
-                      score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1);
+                      score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
                       if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                         (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores
 %                           disp('this move is better than the last one');
