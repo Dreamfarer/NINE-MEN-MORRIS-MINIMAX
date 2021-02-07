@@ -1,4 +1,4 @@
-function b=muehleControler3(b,startingPlayer)
+function b=muehleController3(b,startingPlayer)
 %minimal Mühle controler for two human players, I/O via Command Window
 %inputs:
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))

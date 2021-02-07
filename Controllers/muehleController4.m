@@ -1,4 +1,4 @@
-function b=muehleControler4(b ,startingPlayer, phase1, phase2, stonesBeginningPhase)
+function b=muehleController4(b ,startingPlayer, phase1, phase2, stonesBeginningPhase)
 %minimal Mühle controler for two human players, I/O via Command Window
 %inputs:
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
