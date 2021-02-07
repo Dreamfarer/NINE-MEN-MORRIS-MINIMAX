@@ -45,19 +45,21 @@ while 1
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
 
-            b
             [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move", [moveFrom moveTo bestStoneRemove]);
-
             
         end
     
     %AI Player    
     else
+        
+        %Call GUI to tell the player that AI is calculating
+        GUI(b, playerType, [phase1 phase2], "waitForAI", [moveFrom moveTo bestStoneRemove]);
+        
         [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
         if phase2==1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
-            disp(['AI placed stone at: ' num2str(moveTo)]);
+            %disp(['AI placed stone at: ' num2str(moveTo)]);
             moveFrom = NaN;
         else
             if bestScore==(Inf)
@@ -75,10 +77,10 @@ while 1
                     end
                 end
             end
-            disp(['AI wants to move stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
-            disp(['score of this move is: ' num2str(bestScore)]);
+            %disp(['AI wants to move stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
+            %disp(['score of this move is: ' num2str(bestScore)]);
             b([moveFrom moveTo])=b([moveTo moveFrom]); 
-            disp(['AI moved stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
+            %disp(['AI moved stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
            
         end
     end
@@ -125,7 +127,6 @@ while 1
     
     %Change Phase from 1 to 2
     if stonesBeginningPhase==0 && phase1 == 1 && phase2 == 1
-        disp('end of Phase 1');
         phase1=2;
         phase2=2;
         

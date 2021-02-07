@@ -30,16 +30,14 @@ muehleFigure.UserData.index = 0;
 muehleFigure.UserData.AI = [moves(1) moves(2) moves(3)];
 
 %Draw board and handle input
-if mode == "GameOver"
-    disp(['Player ' num2str(playerType) ' won!'])
-else
-    updateBoard(muehleFigure);
+updateBoard(muehleFigure);
+
+if mode ~= "GameOver" && mode ~= "waitForAI"
     
     %Wait for 'uiresume' to be called, to continue
     if abs(playerType)==1
         uiwait(muehleFigure); 
-    end
-    
+    end    
 end
 
 %Return Values

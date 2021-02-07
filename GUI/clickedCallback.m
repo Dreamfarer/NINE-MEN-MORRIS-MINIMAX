@@ -20,7 +20,6 @@ function clickedCallback(obj,evt)
         %Transfer index to muehleFigure
         muehleFigure.UserData.index = obj.UserData(1);
         muehleFigure.UserData.board(muehleFigure.UserData.index) = 0;
-        disp("Removed or what?")
         uiresume(muehleFigure);
         
     elseif muehleFigure.UserData.phase(1) >= 2
@@ -48,8 +47,9 @@ function clickedCallback(obj,evt)
 
         %Show possible moves in phases 2&3
         if muehleFigure.UserData.phase(1) == 2 || muehleFigure.UserData.phase(1) == 3
-            delete(findobj(gca,'Type','text'));
-            text(0.25,-1,"Chose where to put it",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
+
+            displayText("Chose where to put it", [0 0 0], 0.07);
+            
             possibilities(muehleFigure, muehleFigure.UserData.index, "move")
         end
 

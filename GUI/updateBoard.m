@@ -34,22 +34,37 @@ function updateBoard(muehleFigure)
     
     %Show possible moves for phase 1
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
-        text(0.25,-1,"Place a stone",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
+        displayText("Place a stone", [0 0 0], 0.07);
         possibilities(muehleFigure, 0, "move")
         
     elseif muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.mode == "move"
-        
-        text(0.25,-1,"Chose a stone to move",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
+        displayText("Chose a stone to move", [0 0 0], 0.07);
         
     %Show possible stones to remove if a 'muehle' has been made    
-    elseif muehleFigure.UserData.mode == "remove"
-        text(0.25,-1,"Remove a stone",'FontUnits','normalized','FontSize',0.07,'HorizontalAlignment','left');
+    elseif muehleFigure.UserData.mode == "remove" 
+        displayText("Remove a stone", [0 0 0], 0.07);
         possibilities(muehleFigure, muehleFigure.UserData.index, "remove")
     end 
     
     %Show which move the AI has made
-    if muehleFigure.UserData.mode ~= "remove"
+    if muehleFigure.UserData.mode ~= "remove" && muehleFigure.UserData.mode ~= "GameOver" && muehleFigure.UserData.mode ~= "waitForAI"
         showAIMoves(muehleFigure);
+    end
+    
+    %Display the winner
+    if muehleFigure.UserData.mode == "GameOver"
+        
+        if muehleFigure.UserData.playerType == 1
+            message = "You have won! Congratulations";
+        else
+            message = "GOFAI has won. Shame on you!";
+        end
+        
+        displayText(message, [0 0 0], 0.07);
+    end
+    
+    if muehleFigure.UserData.mode == "waitForAI"
+        displayText("AI is doing its magic ...", [1 0 0], 0.07);
     end
     
     %Update figures and process callbacks
@@ -61,9 +76,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function showAIMoves(muehleFigure)
     
-if muehleFigure.UserData.phase(1) == 1
-    
-elseif muehleFigure.UserData.phase(1) > 1 && ~isnan(muehleFigure.UserData.AI(1)) && ~isnan(muehleFigure.UserData.AI(2))
+if muehleFigure.UserData.phase(1) > 1 && ~isnan(muehleFigure.UserData.AI(1)) && ~isnan(muehleFigure.UserData.AI(2))
     
     point1 = [matrixToPosition(muehleFigure.UserData.AI(1), 1, "line") matrixToPosition(muehleFigure.UserData.AI(2), 1, "line")];
     point2 = [matrixToPosition(muehleFigure.UserData.AI(1), 2, "line") matrixToPosition(muehleFigure.UserData.AI(2), 2, "line")];
