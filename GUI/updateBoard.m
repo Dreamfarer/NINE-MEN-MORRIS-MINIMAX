@@ -66,6 +66,7 @@ function pass = updateBoard(muehleFigure)
             pass = false;
             disp("WHATTT")
         end
+        pass = true;
     end 
     
     %Display the winner
