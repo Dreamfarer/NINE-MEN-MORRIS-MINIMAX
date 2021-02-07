@@ -1,4 +1,4 @@
-function [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, playerType)
+function [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, playerType, latestMoveTo)
 % evaluation function for Mühle
 % input:
 %   board specifies the current state of the game (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
@@ -10,8 +10,13 @@ function [isOver, finscore]=evaluateMuehleBoard2(board, depth, phase1, phase2, p
 
 
 if phase1==1
-isOver=0;
-finscore=0;
+    isOver=0;
+    finscore=0;
+    
+
+    
+    
+    
 elseif (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)
     n=0;
     a=find(board==playerType);
@@ -31,6 +36,7 @@ elseif (playerType==1 && phase1==2) || (playerType==-1 && phase2==2)
     else 
         isOver=0;
         finscore=0;
+        
     end
 elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
     if numel(board(board==playerType))<3
@@ -39,14 +45,17 @@ elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
     else
         isOver=0;
         finscore=0;
+        
     end
 end
 
-% disp(['finscore is: ' num2str(finscore)]);
-
-% if checkMuehle(board, moveTo)
-%     finscore=finscore+(-playerType*4);
-% end
 
 
+
+if checkMuehle(board, latestMoveTo)%&&depth==0
+    %     disp(['checking with: ' num2str(latestMoveTo) ' in depth ' num2str(depth)]);
+    %     board
+    finscore=finscore+(playerType*20);
+    disp([num2str(finscore) ' in depth: ' num2str(depth)]);
+end
 end

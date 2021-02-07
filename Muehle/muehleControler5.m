@@ -58,11 +58,12 @@ while 1
         %Call GUI to tell the player that AI is calculating
         GUI(b, playerType, [phase1 phase2], "waitForAI", [moveFrom moveTo removedStone]);
         
-        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle2(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
+        [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle2(b, 0, phase1, phase2, playerType,stonesBeginningPhase, 1);
         if phase2==1
             stonesBeginningPhase=stonesBeginningPhase-1;
             b(moveTo)=playerType;
             %disp(['AI placed stone at: ' num2str(moveTo)]);
+            disp(['score of this move is: ' num2str(bestScore)]);
             moveFrom = NaN;
         else
             if bestScore==(Inf)
@@ -81,9 +82,11 @@ while 1
                 end
             end
             %disp(['AI wants to move stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
+            if bestScore~=10
             disp(['score of this move is: ' num2str(bestScore)]);
             b([moveFrom moveTo])=b([moveTo moveFrom]); 
             disp(['AI moved stone from: ' num2str(moveFrom) ' to: ' num2str(moveTo) ]);
+            end
            
         end
     end
@@ -138,7 +141,7 @@ while 1
     end
     
     %Check if game is over
-    isOver = evaluateMuehleBoard2(b, 0, phase1, phase2, -playerType);
+    isOver = evaluateMuehleBoard2(b, 0, phase1, phase2, -playerType, moveTo);
     if(isOver)
         GUI(b, playerType, [phase1 phase2], "GameOver", [moveFrom moveTo removedStone]);
         break; 
