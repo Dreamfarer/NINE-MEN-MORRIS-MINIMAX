@@ -18,29 +18,23 @@ function clickedCallback(obj,evt)
     %Phase 2 & 3 need two clicks, we need to wait for a second click
     muehleFigure.UserData.click = muehleFigure.UserData.click + 1;
     
-    %Phase 1
+    %Phase 1 and
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
-        muehleFigure.UserData.moveTo = obj.UserData(1); %UserData(1): is the object's linear index (of Luca's board)
+        muehleFigure.UserData.moveTo = obj.UserData(1);
         continueAllowed = 1;
-    
-    %Remove a opponent's stone
+        
     elseif muehleFigure.UserData.mode == "remove"
         
         %Transfer index to muehleFigure
         muehleFigure.UserData.index = obj.UserData(1);
         muehleFigure.UserData.board(muehleFigure.UserData.index) = 0;
         uiresume(muehleFigure);
-    
-    %Phase 2 and 3
-    elseif muehleFigure.UserData.phase(1) >= 2
         
-        %First Click
-        if muehleFigure.UserData.click == 1 && obj.UserData(2) == 1 %UserData(2): is the type of rectangle that has been clicked on
+    elseif muehleFigure.UserData.phase(1) >= 2
+        if muehleFigure.UserData.click == 1 && obj.UserData(2) == 1
             muehleFigure.UserData.moveFrom = obj.UserData(1);
             continueAllowed = 1;
-        
-        %Second Click
-        elseif muehleFigure.UserData.click == 2 && obj.UserData(2) == 0 %%UserData(2): The second time the player must click on a possible move
+        elseif muehleFigure.UserData.click == 2 && obj.UserData(2) == 0
             %Delete old tag
             delete(findobj('Position',[matrixToPosition(muehleFigure.UserData.moveFrom, 1, "rectangle") matrixToPosition(muehleFigure.UserData.moveFrom, 2, "rectangle") 0.5 0.5],'Tag','clickable'));
             muehleFigure.UserData.board(muehleFigure.UserData.moveFrom) = 0;
@@ -50,7 +44,7 @@ function clickedCallback(obj,evt)
     end
     
     if continueAllowed == 1
-        %Transfer index of clicked object to muehleFigure
+        %Transfer index to muehleFigure
         muehleFigure.UserData.index = obj.UserData(1);
 
         %Delete old stone
@@ -71,8 +65,8 @@ function clickedCallback(obj,evt)
             
         end
         
-        %Loosen 'uiwait' in GUI.m to continue with game
         if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.click == 2)
+            
             uiresume(muehleFigure);
             muehleFigure.UserData.board(muehleFigure.UserData.index) = muehleFigure.UserData.playerType;
         end
