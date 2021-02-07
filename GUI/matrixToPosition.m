@@ -1,8 +1,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Matrix Luca to 7x7 Display-Matrix
+% Matrix of Luca to 7x7 Figure-Matrix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-Input-
+%x:                     Linear index
+%y:                     1: x-value, 2: y-value of given linear index
+%mode("rectangle"):     This mode adds -0.25 because of aligement reasons
+%mode("line"):          Nothing is added to the coordinates
+
 function position = matrixToPosition(x, y, mode)
 
+%Linear Index of Luca 3x3x3
 A = [
     0 6; %1
     0 3; %2
