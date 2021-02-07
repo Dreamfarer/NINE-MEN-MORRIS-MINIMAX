@@ -7,6 +7,7 @@ function b=muehleControler5(b,startingPlayer)
 phase1=1;
 phase2=1;
 stonesBeginningPhase=18;
+removedStone = NaN;
 
 %Determine which player begins
 if ~exist('startingPlayer','var')
@@ -40,20 +41,22 @@ while 1
             stonesBeginningPhase=stonesBeginningPhase-1; 
             
             %Call GUI and do the magik
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move", [moveFrom moveTo bestStoneRemove]);
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move", [moveFrom moveTo removedStone]);
         
         %Phase 2 and 3
         elseif phase1==2 || phase1==3 %%check for phase 2 or 3
 
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move", [moveFrom moveTo bestStoneRemove]);
+            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "move", [moveFrom moveTo removedStone]);
             
         end
+        
+        removedStone = NaN;
     
     %AI Player    
     else
         
         %Call GUI to tell the player that AI is calculating
-        GUI(b, playerType, [phase1 phase2], "waitForAI", [moveFrom moveTo bestStoneRemove]);
+        GUI(b, playerType, [phase1 phase2], "waitForAI", [moveFrom moveTo removedStone]);
         
         [bestScore, moveFrom, moveTo, bestStoneRemove] = minimaxMuehle2(b, 0, phase1, phase2, playerType,stonesBeginningPhase);
         if phase2==1
@@ -91,7 +94,7 @@ while 1
         %Human Player
         if playerType==1
             
-            [b, moveTo] = GUI(b, playerType, [phase1 phase2], "remove", [moveFrom moveTo bestStoneRemove]);
+             [b, moveTo] = GUI(b, playerType, [phase1 phase2], "remove", [moveFrom moveTo removedStone]);
             
         %AI
         else
@@ -105,11 +108,13 @@ while 1
             if ~isempty(possibleRemoves)
                 if bestScore~=(Inf)
                     b(bestStoneRemove)=0;
-                    disp(['AI removed stone: ' num2str(bestStoneRemove)]);
+                    
+                    removedStone = bestStoneRemove;
                 else
                     b(possibleRemoves(1))=0;
                 end
             end
+   
         end
         
         %Change phases (?)
@@ -135,7 +140,7 @@ while 1
     %Check if game is over
     isOver = evaluateMuehleBoard2(b, 0, phase1, phase2, -playerType);
     if(isOver)
-        GUI(b, playerType, [phase1 phase2], "GameOver", [moveFrom moveTo bestStoneRemove]);
+        GUI(b, playerType, [phase1 phase2], "GameOver", [moveFrom moveTo removedStone]);
         break; 
     end
     playerType = -playerType;
