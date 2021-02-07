@@ -1,12 +1,9 @@
-function b=muehleControler4(b,startingPlayer)
+function b=muehleControler4(b ,startingPlayer, phase1, phase2, stonesBeginningPhase)
 %minimal Mühle controler for two human players, I/O via Command Window
 %inputs:
 %  b  (default:empty) specifies a board (3x3x3, 0=empty; 1=mark pl1(white); -1=mark pl2(black))
 %  startingPlayer (default:random) specifies which players (1/-1) turn it is
 
-phase1=1;
-phase2=1;
-stonesBeginningPhase=18;
 removedStone = NaN;
 
 %Determine which player begins
@@ -18,6 +15,18 @@ if ~exist('startingPlayer','var')
 end
 
 playerType = startingPlayer;
+
+if ~exist('stonesBeginningPhase','var')
+    stonesBeginningPhase = 18;
+end
+
+if ~exist('phase1','var')
+    phase1 = 1;
+end
+
+if ~exist('phase2','var')
+    phase2 = 1;
+end
 
 %Create 3x3x3 board
 if ~exist('b','var') || size(b,1)~=3 || size(b,2)~=3 || size(b,3)~=3 %create board if nonexistent
@@ -31,6 +40,9 @@ moveFrom = NaN;
 bestStoneRemove = NaN;
 
 while 1
+    
+    disp(b);
+    
     %Human Player
     if playerType == 1 
         

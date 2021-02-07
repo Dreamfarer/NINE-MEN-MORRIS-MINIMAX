@@ -45,17 +45,14 @@ muehleFigure.UserData.index = 0;
 muehleFigure.UserData.AI = [AImoves(1) AImoves(2) AImoves(3)];
 
 %Draw board and handle input
-updateBoard(muehleFigure);
-
-%Wait for 'uiresume' to be called, to continue game
-if mode ~= "GameOver" && mode ~= "waitForAI"  
-    if abs(playerType)==1
-        uiwait(muehleFigure); 
-    end    
+if updateBoard(muehleFigure) == true
+    uiwait(muehleFigure);
 end
 
 %Return Values
 newboard = muehleFigure.UserData.board;
 moveTo = muehleFigure.UserData.moveTo;
+
+disp("job done")
 
 end
