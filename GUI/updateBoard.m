@@ -45,7 +45,9 @@ function updateBoard(muehleFigure)
     %Show possible stones to remove if a 'muehle' has been made    
     elseif muehleFigure.UserData.mode == "remove" 
         displayText("Remove a stone", [0 0 0], 0.07);
-        if isnan(possibilities(muehleFigure, muehleFigure.UserData.index, "remove", true))
+        
+        possible = possibilities(muehleFigure, muehleFigure.UserData.index, "remove", true);
+        if isnan(possible(1))
             uiresume(muehleFigure);
         end
     end 
