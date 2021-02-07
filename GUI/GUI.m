@@ -1,5 +1,10 @@
 function [newboard, moveTo] = GUI(board, playerType, phase, mode, moves)
 
+%Input Arguments:
+%board: Current Nine-Men-Morris board
+%playerType: The player that currently playing
+%phase [Phase of Player 1, Phase of Player 2]
+
 %Find existing figure
 muehleFigure = findobj('Name','Muehle');
 
@@ -22,19 +27,19 @@ muehleFigure.UserData.moveFrom = 0;
 muehleFigure.UserData.moveTo = 0;
 muehleFigure.UserData.mode = mode;
 muehleFigure.UserData.index = 0;
-
 muehleFigure.UserData.AI = [moves(1) moves(2) moves(3)];
 
 %Draw board and handle input
-if phase(3) == 2
-   updateBoard(muehleFigure);
-elseif phase(3) == 3
+if mode == "GameOver"
     disp(['Player ' num2str(playerType) ' won!'])
-end
-
-%Wait for 'uiresume' to be called, to continue
-if abs(playerType)==1
-    uiwait(muehleFigure); 
+else
+    updateBoard(muehleFigure);
+    
+    %Wait for 'uiresume' to be called, to continue
+    if abs(playerType)==1
+        uiwait(muehleFigure); 
+    end
+    
 end
 
 %Return Values

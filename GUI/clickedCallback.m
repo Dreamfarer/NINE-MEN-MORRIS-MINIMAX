@@ -14,6 +14,7 @@ function clickedCallback(obj,evt)
     if muehleFigure.UserData.phase(1) == 1 && muehleFigure.UserData.mode == "move"
         muehleFigure.UserData.moveTo = obj.UserData(1);
         continueAllowed = 1;
+        
     elseif muehleFigure.UserData.mode == "remove"
         
         %Transfer index to muehleFigure
@@ -52,7 +53,7 @@ function clickedCallback(obj,evt)
             possibilities(muehleFigure, muehleFigure.UserData.index, "move")
         end
 
-        if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) == 2 && muehleFigure.UserData.click == 2)
+        if muehleFigure.UserData.phase(1) == 1 || (muehleFigure.UserData.phase(1) > 1 && muehleFigure.UserData.click == 2)
             
             uiresume(muehleFigure);
             muehleFigure.UserData.board(muehleFigure.UserData.index) = muehleFigure.UserData.playerType;

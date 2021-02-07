@@ -15,11 +15,11 @@ function updateBoard(muehleFigure)
         
         if isnan(matrixToPosition(i, 1, "rectangle")) == false && isnan(matrixToPosition(i, 2, "rectangle")) == false && muehleFigure.UserData.board(i) ~= 0
             
-            %Decide which color to draw
+            %Decide which color to draw the rectangles on the board
             if muehleFigure.UserData.board(i) == 1
-                color = [1 1 1];
+                color = [1 1 1]; %White
             elseif muehleFigure.UserData.board(i) == -1
-                color = [0 0 0];
+                color = [0 0 0]; %Black
             end
             
             %Decide if a callback should be added
@@ -47,6 +47,7 @@ function updateBoard(muehleFigure)
         possibilities(muehleFigure, muehleFigure.UserData.index, "remove")
     end 
     
+    %Show which move the AI has made
     if muehleFigure.UserData.mode ~= "remove"
         showAIMoves(muehleFigure);
     end
@@ -68,6 +69,8 @@ elseif muehleFigure.UserData.phase(1) > 1 && ~isnan(muehleFigure.UserData.AI(1))
     point2 = [matrixToPosition(muehleFigure.UserData.AI(1), 2, "line") matrixToPosition(muehleFigure.UserData.AI(2), 2, "line")];
     
     line(point1,point2,'Color','red','Clipping', 'off', 'LineWidth', 5)
+
+    %annotation('arrow',[0.5 0] , [0 0.5], 'Position',[1 1 1 1], 'Color','red', 'LineWidth', 5);
 end
 
 end
