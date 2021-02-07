@@ -23,24 +23,20 @@ end
 %Draw all the valid moves
 possible(1) = [];
 
-if ~isempty(possible)
+if ~isempty(possible) && visible ~= 
     
-    if visible == true
+    for i=possible   
         
-            for i=possible   
-        
-            if mode == "move"
-                color = [0 1 0 0.5];
-            else
-                color = [1 1 0 0.5];
-            end
+        if mode == "move"
+            color = [0 1 0 0.5];
+        else
+            color = [1 1 0 0.5];
+        end
 
-            %'UserData, i = index, 0: possible moves, -1: black, 1: white
-            rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData', [i 0],'Tag','clickable','ButtonDownFcn',@clickedCallback);   
+        %'UserData, i = index, 0: possible moves, -1: black, 1: white
+        rectangle('Position',[matrixToPosition(i, 1, "rectangle") matrixToPosition(i, 2, "rectangle") 0.5 0.5],'FaceColor',color,'Clipping','off','UserData', [i 0],'Tag','clickable','ButtonDownFcn',@clickedCallback);   
 
-            end  
     end
-    
 else
     possible = NaN;
 end
