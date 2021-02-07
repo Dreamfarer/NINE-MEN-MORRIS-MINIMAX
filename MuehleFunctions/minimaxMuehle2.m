@@ -150,8 +150,8 @@ else
                           
                           for m=1:numel(possibleRemoves)
                               childboard(possibleRemoves(m))=0; %removes stone from board
-                              disp(['they remove stone: ' num2str(possibleRemoves(m))]);
-                              disp(' ');
+%                               disp(['they remove stone: ' num2str(possibleRemoves(m))]);
+%                               disp(' ');
                               score=minimaxMuehle2(childboard, depth+1, phase1,phase2,-playerType,stonesBeginningPhase-1, possibleTo(k));
                               if (playerType == 1 && score > bestScore) || ...    %maximizing player --> wants positive scores
                                   (playerType == - 1 && score < bestScore)    %minimizing player --> wants negative scores

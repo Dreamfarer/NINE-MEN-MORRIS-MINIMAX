@@ -59,10 +59,10 @@ function pass = updateBoard(muehleFigure)
     elseif muehleFigure.UserData.mode == "remove" 
         
         %Check if there are actually stones to remove
+        displayText("Remove a stone", [0 0 0], 0.07);
         possible = possibilities(muehleFigure, muehleFigure.UserData.index, "remove", true);
         if isnan(possible(1))
             disp("hmm jo")
-            displayText("Remove a stone", [0 0 0], 0.07);
             pass = false;
             disp("WHATTT")
         end

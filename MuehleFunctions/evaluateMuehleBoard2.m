@@ -50,12 +50,10 @@ elseif (playerType==1 && phase1==3) || (playerType==-1 && phase2==3)
 end
 
 
-
-
 if checkMuehle(board, latestMoveTo)%&&depth==0
     %     disp(['checking with: ' num2str(latestMoveTo) ' in depth ' num2str(depth)]);
     %     board
     finscore=finscore+(playerType*20);
-    disp([num2str(finscore) ' in depth: ' num2str(depth)]);
+%     disp([num2str(finscore) ' in depth: ' num2str(depth)]);
 end
 end
